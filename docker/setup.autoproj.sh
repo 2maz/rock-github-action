@@ -32,9 +32,11 @@ else
     cp -R $SCRIPT_DIR/overrides.d autoproj/
 fi
 
+echo "Autobuild.displayed_error_line_count='ALL'" >> autoproj/init.rb
 sed -i "s#rock\.core#${PKG_NAME}#g" autoproj/manifest
 if [ "$PKG_PULL_REQUEST" = "false" ]; then
     echo "overrides:\n  - ${PKG_NAME}:\n    branch: ${PKG_BRANCH}" > autoproj/overrides.yml
+
 fi
 
 # Activate testing
