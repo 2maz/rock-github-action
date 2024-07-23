@@ -1,13 +1,18 @@
 #!/usr/bin/bash
 
 BUILDCONF_SEED_CONFIG=${1:-seed-config.yaml}
-BUILDCONF_BRANCH=${BUILDCONF_BRANCH:-wip-qt4-qt5}
+BUILDCONF_BRANCH=${BUILDCONF_BRANCH:-feature/qt5}
 BUILDCONF_URL=${BUILDCONF_URL:-https://github.com/rock-core/buildconf.git}
+
+SCRIPT_DIR=$(dirname $(realpath -L $0))
 
 echo "Using:"
 echo "    SEED_CONFIG=$SEED_CONFIG"
 echo "    BUILDCONF_URL=$BUILDCONF_URL"
 echo "    BUILDCONF_BRANCH=$BUILDCONF_BRANCH"
+echo "    PKG_BRANCH=$PKG_BRANCH"
+echo "    PKG_NAME=$PKG_NAME"
+echo "    PKG_PULL_REQUEST=$PKG_PULL_REQUEST"
 
 git config --global user.email "rock-users@dfki.de"
 git config --global user.name "Rock CI"
@@ -21,10 +26,16 @@ export AUTOPROJ_BOOTSTRAP_IGNORE_NONEMPTY_DIR=1
 export AUTOPROJ_NONINTERACTIVE=1
 ruby autoproj_bootstrap git $BUILDCONF_URL branch=$BUILDCONF_BRANCH --seed-config=$BUILDCONF_SEED_CONFIG
 
+if [ ! -d  $SCRIPT_DIR/overrides.d ]; then
+    mkdir -p $SCRIPT_DIR/overrides.d
+else
+    cp -R $SCRIPT_DIR/overrides.d autoproj/
+fi
+
 sed -i "s#rock\.core#${PKG_NAME}#g" autoproj/manifest
-if [ "$PKG_PULL_REQUEST" = "false" ]; then \
-    echo "Using branch: ${PKG_BRANCH}"; \
-    echo "overrides:\n  - ${PKG_NAME}:\n    branch: ${PKG_BRANCH}" > autoproj/overrides.yml; \
+if [ "$PKG_PULL_REQUEST" = "false" ]; then
+    echo "- ${PKG_NAME}:\n    branch: ${PKG_BRANCH}" > autoproj/overrides.d/10_pull_request.yml
+    cat autoproj/overrides.d/10_pull_request.yml
 fi
 
 # Activate testing
@@ -38,14 +49,14 @@ autoproj osdeps
 
 ## Check if this a pull request and change to pull request
 ## accordingly
-if [ "$PKG_PULL_REQUEST" != "false" ]; then \
-    echo "Using pull request: ${PKG_PULL_REQUEST}";
-    cd "${PKG_NAME}";
-    git fetch autobuild pull/${PKG_PULL_REQUEST}/head:test_pr;
-    git checkout test_pr;
-    cd -;
-    source env.sh;
-    autoproj osdeps;
+if [ "$PKG_PULL_REQUEST" != "false" ]; then
+    echo "Using pull request: ${PKG_PULL_REQUEST}"
+    cd "${PKG_NAME}"
+    git fetch autobuild pull/${PKG_PULL_REQUEST}/head:test_pr
+    git checkout test_pr
+    cd -
+    source env.sh
+    autoproj osdeps
 fi
 source env.sh
 amake
