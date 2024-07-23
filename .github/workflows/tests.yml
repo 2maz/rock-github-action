@@ -22,7 +22,7 @@ jobs:
       - name: Build 
         run: docker build -t rock/${{ matrix.os }} -f rock-github-workflow/docker/Dockerfile .
                 --build-arg PKG_NAME=${{ matrix.package }}
-                --build-arg PKG_BRANCH=master
+                --build-arg PKG_BRANCH=feature/qt5
                 --build-arg BASE_IMAGE=${{ matrix.os }}
                 --build-arg SEED_CONFIG=${{ matrix.seed_config }}
 
