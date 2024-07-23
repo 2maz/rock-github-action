@@ -20,9 +20,10 @@ ARG PKG_PULL_REQUEST="false"
 ENV PKG_PULL_REQUEST=${PKG_PULL_REQUEST}
 
 ARG SEED_CONFIG="test/ci/autoproj-config.yml"
+ARG DOCKER_DIR="rock-github-workflow/docker"
 ## END ARGUMENTS
 
-ADD docker /scripts
+ADD ${DOCKER_DIR} /scripts
 
 RUN bash /scripts/setup.image.sh docker
 USER docker
