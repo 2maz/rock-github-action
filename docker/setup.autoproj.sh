@@ -34,8 +34,7 @@ fi
 
 sed -i "s#rock\.core#${PKG_NAME}#g" autoproj/manifest
 if [ "$PKG_PULL_REQUEST" = "false" ]; then
-    echo "- ${PKG_NAME}:\n    branch: ${PKG_BRANCH}" > autoproj/overrides.d/10_pull_request.yml
-    cat autoproj/overrides.d/10_pull_request.yml
+    echo "overrides:\n  - ${PKG_NAME}:\n    branch: ${PKG_BRANCH}" > autoproj/overrides.yml
 fi
 
 # Activate testing
