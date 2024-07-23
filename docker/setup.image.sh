@@ -7,6 +7,8 @@ apt upgrade -y
 
 export DEBIAN_FRONTEND=noninteractive
 apt install -y gnupg2 ruby ruby-dev python3-dev wget tzdata locales g++ autotools-dev make cmake sudo git
+# Extra
+apt install -y qttools5-dev
 
 export LANGUAGE=de_DE.UTF-8
 export LANG=de_DE.UTF-8
