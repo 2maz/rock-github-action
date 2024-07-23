@@ -12,8 +12,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: 2maz/rock-github-workflow
+          path: rock-github-workflow
+          ref: ${{ github.ref_name }}
+
       - name: Build 
-        run: docker build -t rock/${{ matrix.os }} -f docker/Dockerfile .
+        run: docker build -t rock/${{ matrix.os }} -f rock-github-workflow/docker/Dockerfile .
                 --build-arg PKG_NAME=${{ matrix.package }}
                 --build-arg PKG_BRANCH=${{ github.ref_name }}
                 --build-arg BASE_IMAGE=${{ matrix.os }}

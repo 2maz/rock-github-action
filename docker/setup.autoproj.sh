@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 BUILDCONF_SEED_CONFIG=${1:-seed-config.yaml}
-BUILDCONF_BRANCH=${BUILDCONF_BRANCH:-feature/qt5}
+BUILDCONF_BRANCH=${BUILDCONF_BRANCH:-wip-qt4-qt5}
 BUILDCONF_URL=${BUILDCONF_URL:-https://github.com/rock-core/buildconf.git}
 
 echo "Using:"
