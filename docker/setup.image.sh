@@ -6,7 +6,7 @@ apt update
 apt upgrade -y
 
 export DEBIAN_FRONTEND=noninteractive
-apt install -y ruby ruby-dev wget tzdata locales g++ autotools-dev make cmake sudo git
+apt install -y gnupg2 ruby ruby-dev python3-dev wget tzdata locales g++ autotools-dev make cmake sudo git
 
 export LANGUAGE=de_DE.UTF-8
 export LANG=de_DE.UTF-8
