@@ -22,14 +22,12 @@ jobs:
       - name: Build 
         run: docker build -t rock/${{ matrix.os }} -f rock-github-workflow/docker/Dockerfile .
                 --build-arg PKG_NAME=${{ matrix.package }}
-                --build-arg PKG_BRANCH=feature/qt5
+                --build-arg PKG_BRANCH=feature/qt5_fixed
                 --build-arg BASE_IMAGE=${{ matrix.os }}
                 --build-arg SEED_CONFIG=${{ matrix.seed_config }}
 
       - name: Test
         run: docker run rock/${{ matrix.os }}
                 /bin/bash -c
-                  "source /home/docker/rock_test/env.sh; BOOST_TEST_CATCH_SYSTEM_ERRORS=\"no\" make -C /home/docker/rock_test/${{ matrix.package }}/build test"
-
-
+                  "source /home/docker/rock_test/env.sh; BOOST_TEST_CATCH_SYSTEM_ERRORS=\"no\" make -C /home/docker/rock_test/${{ matrix.package }}/build/ test"
 

@@ -1,0 +1,7 @@
+- gui/vizkit3d:
+  github: rock-core/gui-vizkit3d
+  branch: feature/qt5_fixed
+
+- base-types:
+  github: rock-core/base-types
+  branch: feature/qt5_fixed
