@@ -18,6 +18,13 @@ jobs:
           repository: 2maz/rock-github-workflow
           path: rock-github-workflow
 
+      - name: Apply package / branch specific overrides
+        run: |
+          if [ -d .ci/overrides.d/ ]; then
+             echo "Copying overrides from .ci/"
+             cp -R .ci/overrides.d/* rock-github-workflow/docker/overrides.d/
+          fi
+
       - name: Build 
         run: docker build -t rock/${{ matrix.os }} -f rock-github-workflow/docker/Dockerfile .
                 --build-arg PKG_NAME=${{ matrix.package }}
