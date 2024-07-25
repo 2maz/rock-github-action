@@ -19,7 +19,7 @@ ENV PKG_BRANCH=${PKG_BRANCH}
 ARG PKG_PULL_REQUEST="false"
 ENV PKG_PULL_REQUEST=${PKG_PULL_REQUEST}
 
-ARG SEED_CONFIG="test/ci/autoproj-config.yml"
+ARG SEED_CONFIG=".ci/autoproj-config.yml"
 ARG DOCKER_DIR="rock-github-workflow/docker"
 ## END ARGUMENTS
 
