@@ -7,7 +7,7 @@ BUILDCONF_URL=${BUILDCONF_URL:-https://github.com/rock-core/buildconf.git}
 SCRIPT_DIR=$(dirname $(realpath -L $0))
 
 echo "Using:"
-echo "    SEED_CONFIG=$SEED_CONFIG"
+echo "    BUILDCONF_SEED_CONFIG=$BUILDCONF_SEED_CONFIG"
 echo "    BUILDCONF_URL=$BUILDCONF_URL"
 echo "    BUILDCONF_BRANCH=$BUILDCONF_BRANCH"
 echo "    PKG_BRANCH=$PKG_BRANCH"
