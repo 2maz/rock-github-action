@@ -1,7 +1,11 @@
 - gui/vizkit3d:
   github: rock-core/gui-vizkit3d
-  branch: feature/qt5_fixed
+  branch: feature/qt5
 
-- base-types:
+- base/cmake:
+  github: rock-core/base-cmake
+  branch: fix-qt5-moc-ui-fallback
+
+- base/types:
   github: rock-core/base-types
-  branch: feature/qt5_fixed
+  branch: feature/qt5
