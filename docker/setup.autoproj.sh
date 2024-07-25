@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 BUILDCONF_SEED_CONFIG=${1:-seed-config.yaml}
-BUILDCONF_BRANCH=${BUILDCONF_BRANCH:-feature/qt5}
+BUILDCONF_BRANCH=${BUILDCONF_BRANCH:-master}
 BUILDCONF_URL=${BUILDCONF_URL:-https://github.com/rock-core/buildconf.git}
 
 SCRIPT_DIR=$(dirname $(realpath -L $0))
