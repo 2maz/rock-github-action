@@ -11,6 +11,7 @@ jobs:
       contents: write
       packages: write
       id-token: write
+      attestations: write
     strategy:
       matrix:
         os: ["ubuntu:20.04", "ubuntu:22.04"]
@@ -41,6 +42,8 @@ jobs:
                 --build-arg PKG_BRANCH=feature/qt5
                 --build-arg BASE_IMAGE=${{ matrix.os }}
                 --build-arg SEED_CONFIG=${{ matrix.seed_config }}
+                --label "org.opencontainers.image.source=${{ github.repositoryUrl }}"
+                --label "org.opencontainers.image.description=Container with a base installation of the Robot Construction Kit"
 
       - name: Test
         run: docker run ${{ env.REGISTRY }}/2maz/rock-${{ matrix.os }}
@@ -55,11 +58,17 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push image
-        run: docker push ${{ env.REGISTRY }}/2maz/rock-${{ matrix.os }}
+        id: push
+        run: |
+            IMAGE_NAME=${{ env.REGISTRY }}/2maz/rock-${{ matrix.os }}
+            docker push $IMAGE_NAME
+            echo "digest=$(docker images --no-trunc --quiet $IMAGE_NAME)" >> "$GITHUB_OUTPUT"
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.REGISTRY }}/2maz/rock-${{ matrix.os }}
+          # see https://github.com/marketplace/actions/generate-generic-attestations
+          # Do NOT include a tag as part of the image name -- the specific image being attested is identified by the supplied digest.
+          subject-name: ${{ env.REGISTRY }}/2maz/rock-ubuntu
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
