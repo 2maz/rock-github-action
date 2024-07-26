@@ -1,3 +1,4 @@
+# Global overrides which apply to all ci jobs using rock-github-workflow
 - pkg_set:github:/rock-core/package_set.git:
   tag:
   branch: feature/qt5
@@ -11,10 +12,6 @@
 - gui/vizkit3d:
   github: rock-core/gui-vizkit3d
   branch: feature/qt5
-
-- base/cmake:
-  github: rock-core/base-cmake
-  branch: fix-qt5-moc-ui-fallback
 
 - base/types:
   github: rock-core/base-types

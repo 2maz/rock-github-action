@@ -1,0 +1,5 @@
+# Overrides that only apply to the repositories workflow
+#
+# - base/types:
+#   github: rock-core/base-types
+#   branch: custom-branch
