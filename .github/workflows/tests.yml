@@ -1,5 +1,8 @@
 name: test
 on: [push]
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   unittests:
     strategy:
@@ -27,14 +30,30 @@ jobs:
           fi
 
       - name: Build 
-        run: docker build -t rock/${{ matrix.os }} -f rock-github-workflow/docker/Dockerfile .
+        run: docker build -t ${{ env.REGISTRY }}/2maz/rock-${{ matrix.os }} -f rock-github-workflow/docker/Dockerfile .
                 --build-arg PKG_NAME=${{ matrix.package }}
                 --build-arg PKG_BRANCH=feature/qt5
                 --build-arg BASE_IMAGE=${{ matrix.os }}
                 --build-arg SEED_CONFIG=${{ matrix.seed_config }}
 
       - name: Test
-        run: docker run rock/${{ matrix.os }}
+        run: docker run ${{ env.REGISTRY }}/2maz/rock-${{ matrix.os }}
                 /bin/bash -c
                   "source /home/docker/rock_test/env.sh; BOOST_TEST_CATCH_SYSTEM_ERRORS=\"no\" /home/docker/rock_test/${{ matrix.package }}/build/test/test_base_types"
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image
+        run: docker push ${{ env.REGISTRY }}/2maz/rock-${{ matrix.os }}
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/2maz/rock-${{ matrix.os }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
